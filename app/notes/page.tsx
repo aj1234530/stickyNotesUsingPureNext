@@ -11,13 +11,18 @@
 import Link from "next/link";
 import CreateNotes from "./ CreateNotes";
 
-export async function getNotes() {
+async function getNotes() {
   const res = await fetch(
-    "http://127.0.0.1:8090//api/collections/notes/records?page=1&perPage=10",
-    { cache: "no-store" } //telling next not to cache
+    "http://127.0.0.1:8090/api/collections/notes/records?page=1&perPage=10"
+    // { cache: "no-store" } //telling next not to cache
   );
   const data = await res.json();
-  return data?.items as any[];
+  return data?.items as {
+    id: string;
+    content: string;
+    created: string;
+    title: string;
+  }[];
 }
 
 export default async function NotesPage() {
@@ -28,7 +33,7 @@ export default async function NotesPage() {
       <div>
         <h1>Notes</h1>
         <div className="flex flex-row flex-wrap gap-4">
-          {notes.map((noteEl, key) => (
+          {notes.map((noteEl) => (
             <NotesWrapper noteEl={noteEl} key={noteEl.id} />
           ))}
         </div>
@@ -38,7 +43,11 @@ export default async function NotesPage() {
   );
 }
 
-function NotesWrapper({ noteEl, key }: { noteEl: any; key: string }) {
+function NotesWrapper({
+  noteEl,
+}: {
+  noteEl: { id: string; title: string; content: string; created: string };
+}) {
   //each el is object(json - js object)
   const { id, title, content, created } = noteEl || {};
   return (

@@ -9,7 +9,12 @@ async function getNote(noteId: string) {
   const data = await res.json();
   return data;
 }
-export default async function NotePage({ params }: any) {
+
+export default async function NotePage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const note = await getNote(id);
   const { title, content, created } = note;
