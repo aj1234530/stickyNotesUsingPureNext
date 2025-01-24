@@ -1,8 +1,6 @@
 //retieve paginated data
-//chaching the cahing behaviour
+//changing the cahing behaviour
 
-import Link from "next/link";
-import CreateNotes from "./ CreateNotes";
 // export const dynamic = 'auto',
 // dynamicParams = true,
 // revalidate = 0,
@@ -10,10 +8,13 @@ import CreateNotes from "./ CreateNotes";
 // runtime = 'nodejs',
 // preferredRegion = 'auto'
 
+import Link from "next/link";
+import CreateNotes from "./ CreateNotes";
+
 export async function getNotes() {
   const res = await fetch(
     "http://127.0.0.1:8090//api/collections/notes/records?page=1&perPage=10",
-    { cache: "no-store" }
+    { cache: "no-store" } //telling next not to cache
   );
   const data = await res.json();
   return data?.items as any[];
